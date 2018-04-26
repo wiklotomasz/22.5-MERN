@@ -6,12 +6,12 @@ import PostList from '../../components/PostList';
 import PostCreateWidget from '../../components/PostCreateWidget/PostCreateWidget';
 
 // Import Actions
-import { addPostRequest, fetchPosts, deletePostRequest } from '../../PostActions';
+import { addPostRequest, fetchPosts, deletePostRequest, thumbUpComment, thumbDownComment } from '../../PostActions';
 import { toggleAddPost } from '../../../App/AppActions';
 
 // Import Selectors
 import { getShowAddPost } from '../../../App/AppReducer';
-import { getPosts } from '../../PostReducer';
+import { getPosts, PostReducer } from '../../PostReducer';
 
 class PostListPage extends Component {
   componentDidMount() {
@@ -24,6 +24,14 @@ class PostListPage extends Component {
     }
   };
 
+  handleThumbUp = (commentId) => {
+    this.props.dispatch(thumbUpComment(commentId));
+  };
+
+  handleThumbDown = (commentId) => {
+    this.props.dispatch(thumbDownComment(commentId));
+  };
+
   handleAddPost = (name, title, content) => {
     this.props.dispatch(toggleAddPost());
     this.props.dispatch(addPostRequest({ name, title, content }));
@@ -33,16 +41,20 @@ class PostListPage extends Component {
     return (
       <div>
         <PostCreateWidget addPost={this.handleAddPost} showAddPost={this.props.showAddPost} />
-        <PostList handleDeletePost={this.handleDeletePost} posts={this.props.posts} />
+        <PostList 
+        handleDeletePost={this.handleDeletePost} 
+        posts={this.props.posts} 
+        handleThumbUp={this.handleThumbUp}
+        handleThumbDown={this.handleThumbDown}
+        />
       </div>
     );
   }
 }
 
-// Actions required to provide data for this component to render in sever side.
 PostListPage.need = [() => { return fetchPosts(); }];
 
-// Retrieve data from store as props
+//
 function mapStateToProps(state) {
   return {
     showAddPost: getShowAddPost(state),
@@ -58,6 +70,8 @@ PostListPage.propTypes = {
   })).isRequired,
   showAddPost: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
+  handleThumbUp: PropTypes.func.isRequired,
+  handleThumbDown: PropTypes.func.isRequired,
 };
 
 PostListPage.contextTypes = {

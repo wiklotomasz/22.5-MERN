@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage } from 'react-intl';
-
-// Import Style
+import { thumbUpComment, thumbDownComment } from '../../PostActions';
+import { PostReducer } from '../../PostReducer';
 import styles from './PostListItem.css';
 
 function PostListItem(props) {
@@ -13,6 +13,8 @@ function PostListItem(props) {
           {props.post.title}
         </Link>
       </h3>
+      <button onClick={this.props.thumbUpComment}>+ 1</button>
+      <button onClick={this.props.thumbDownComment}>- 1</button>
       <p className={styles['author-name']}><FormattedMessage id="by" /> {props.post.name}</p>
       <p className={styles['post-desc']}>{props.post.content}</p>
       <p className={styles['post-action']}><a href="#" onClick={props.onDelete}><FormattedMessage id="deletePost" /></a></p>
