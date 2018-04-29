@@ -16,7 +16,6 @@ export class PostDetailPage extends React.Component {
       name: this.props.post.name,
       title: this.props.post.title,
       content: this.props.post.content,
-      voteCount: this.props.post.voteCount,
     };
   }
 
@@ -26,14 +25,6 @@ export class PostDetailPage extends React.Component {
     this.setState({
       [name]: value,
     });
-  };
-
-  handleVoteUp = (event) => {
-    this.props.voteUp(this.state);
-  };
-
-  handleVoteDown = (event) => {
-    this.props.voteDown(this.state);
   };
 
   handleEditPost = () => {
@@ -59,9 +50,6 @@ export class PostDetailPage extends React.Component {
         <h3 className={styles['post-title']}>{this.props.post.title}</h3>
         <p className={styles['author-name']}><FormattedMessage id="by" /> {this.props.post.name}</p>
         <p className={styles['post-desc']}>{this.props.post.content}</p>
-        <p>{this.props.post.voteCount}</p>
-        <button className="increment" onclick={handleVoteUp}>+ 1</button>
-        <button className="decrement" onclick={handleVoteDown}>- 1</button>
       </div>
     );
   };
@@ -115,14 +103,12 @@ PostDetailPage.propTypes = {
     content: PropTypes.string.isRequired,
     slug: PropTypes.string.isRequired,
     cuid: PropTypes.string.isRequired,
-    voteCount: PropTypes.number.isRequired,
   }).isRequired,
   intl: PropTypes.shape({
     messages: PropTypes.shape({
       authorName: PropTypes.string.isRequired,
       postTitle: PropTypes.string.isRequired,
       postContent: PropTypes.string.isRequired,
-      voteCount: PropTypes.number.isRequired,
     }).isRequired,
   }).isRequired,
   showEditPost: PropTypes.bool.isRequired,

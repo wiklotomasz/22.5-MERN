@@ -6,12 +6,12 @@ import PostList from '../../components/PostList';
 import PostCreateWidget from '../../components/PostCreateWidget/PostCreateWidget';
 
 // Import Actions
-import { addPostRequest, fetchPosts, deletePostRequest, thumbUpComment, thumbDownComment } from '../../PostActions';
+import { addPostRequest, fetchPosts, deletePostRequest, thumbUpRequest, thumbDownRequest } from '../../PostActions';
 import { toggleAddPost } from '../../../App/AppActions';
 
 // Import Selectors
 import { getShowAddPost } from '../../../App/AppReducer';
-import { getPosts, PostReducer } from '../../PostReducer';
+import { getPosts } from '../../PostReducer';
 
 class PostListPage extends Component {
   componentDidMount() {
@@ -24,12 +24,12 @@ class PostListPage extends Component {
     }
   };
 
-  handleThumbUp = (commentId) => {
-    this.props.dispatch(thumbUpComment(commentId));
+  thumbUp = post => {
+    this.props.dispatch(thumbUpRequest(post));
   };
 
-  handleThumbDown = (commentId) => {
-    this.props.dispatch(thumbDownComment(commentId));
+  thumbDown = post => {
+    this.props.dispatch(thumbDownRequest(post));
   };
 
   handleAddPost = (name, title, content) => {
@@ -44,9 +44,8 @@ class PostListPage extends Component {
         <PostList 
         handleDeletePost={this.handleDeletePost} 
         posts={this.props.posts} 
-        handleThumbUp={this.handleThumbUp}
-        handleThumbDown={this.handleThumbDown}
-        />
+        thumbUp={this.thumbUp}
+        thumbDown={this.thumbDown} />
       </div>
     );
   }
@@ -70,8 +69,6 @@ PostListPage.propTypes = {
   })).isRequired,
   showAddPost: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
-  handleThumbUp: PropTypes.func.isRequired,
-  handleThumbDown: PropTypes.func.isRequired,
 };
 
 PostListPage.contextTypes = {
